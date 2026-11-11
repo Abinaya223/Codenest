@@ -14,9 +14,11 @@ const PORT = Number(process.env.PORT || 3000);
 // MIDDLEWARE
 // ==========================================
 
-app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN || true
-}));
+app.use(
+  cors({
+    origin: process.env.FRONTEND_ORIGIN || true,
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,16 +30,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // DATABASE CONNECTION
 // ==========================================
 
-const required = [
-  "DB_HOST",
-  "DB_USER",
-  "DB_PASSWORD",
-  "JWT_SECRET"
-];
+const required = ["DB_HOST", "DB_USER", "DB_PASSWORD", "JWT_SECRET"];
 
-const missing = required.filter(
-  (key) => !process.env[key]
-);
+const missing = required.filter((key) => !process.env[key]);
 
 let pool = null;
 
@@ -46,20 +41,21 @@ if (missing.length === 0) {
     let sslConfig;
 
     if (process.env.DB_SSL === "true") {
-      const caPath = path.resolve(
-        __dirname,
-        process.env.DB_SSL_CA || "ca.pem"
-      );
+      const caBase64 = process.env.DB_SSL_CA;
 
-      if (!fs.existsSync(caPath)) {
-        throw new Error(
-          `CA Certificate tidak ditemukan: ${caPath}`
-        );
+      if (!caBase64) {
+        throw new Error("DB_SSL_CA belum diisi.");
+      }
+
+      const caCert = Buffer.from(caBase64, "base64").toString("utf8");
+
+      if (!caCert.includes("-----BEGIN CERTIFICATE-----")) {
+        throw new Error("CA Certificate tidak valid.");
       }
 
       sslConfig = {
-        ca: fs.readFileSync(caPath, "utf8"),
-        rejectUnauthorized: true
+        ca: caCert,
+        rejectUnauthorized: true,
       };
     }
 
@@ -71,10 +67,10 @@ if (missing.length === 0) {
       database: process.env.DB_NAME || "codenest",
 
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: 5,
       queueLimit: 0,
 
-      ssl: sslConfig
+      ssl: sslConfig,
     });
 
     console.log("Konfigurasi database berhasil dibuat.");
@@ -82,17 +78,14 @@ if (missing.length === 0) {
     console.error("Database configuration error:", error.message);
   }
 } else {
-  console.warn(
-    "Database/JWT belum siap. Isi .env:",
-    missing.join(", ")
-  );
+  console.warn("Database/JWT belum siap. Isi .env:", missing.join(", "));
 }
 
 // Fungsi query database
 async function db(sql, params = []) {
   if (!pool) {
     throw new Error(
-      "Database belum dikonfigurasi. Periksa .env dan CA Certificate."
+      "Database belum dikonfigurasi. Periksa .env dan CA Certificate.",
     );
   }
 
@@ -107,26 +100,21 @@ async function db(sql, params = []) {
 function auth(req, res, next) {
   const header = req.headers.authorization || "";
 
-  const token = header.startsWith("Bearer ")
-    ? header.slice(7)
-    : null;
+  const token = header.startsWith("Bearer ") ? header.slice(7) : null;
 
   if (!token) {
     return res.status(401).json({
-      message: "Token tidak ditemukan. Silakan login."
+      message: "Token tidak ditemukan. Silakan login.",
     });
   }
 
   try {
-    req.user = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    );
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
 
     next();
   } catch (error) {
     return res.status(401).json({
-      message: "Token tidak valid atau sudah kedaluwarsa."
+      message: "Token tidak valid atau sudah kedaluwarsa.",
     });
   }
 }
@@ -141,13 +129,13 @@ app.get("/api/health", async (req, res) => {
 
     res.json({
       status: "ok",
-      database: "connected"
+      database: "connected",
     });
   } catch (error) {
     res.status(503).json({
       status: "error",
       database: "disconnected",
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -161,27 +149,26 @@ app.post("/api/auth/register", async (req, res) => {
 
   if (!name || !email || !password) {
     return res.status(400).json({
-      message: "Nama, email, dan password wajib diisi."
+      message: "Nama, email, dan password wajib diisi.",
     });
   }
 
   if (String(password).length < 6) {
     return res.status(400).json({
-      message: "Password minimal 6 karakter."
+      message: "Password minimal 6 karakter.",
     });
   }
 
   try {
     const normalizedEmail = String(email).trim().toLowerCase();
 
-    const exists = await db(
-      "SELECT id FROM users WHERE email = ?",
-      [normalizedEmail]
-    );
+    const exists = await db("SELECT id FROM users WHERE email = ?", [
+      normalizedEmail,
+    ]);
 
     if (exists.length > 0) {
       return res.status(409).json({
-        message: "Email sudah terdaftar."
+        message: "Email sudah terdaftar.",
       });
     }
 
@@ -189,34 +176,25 @@ app.post("/api/auth/register", async (req, res) => {
 
     const result = await db(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-      [
-        String(name).trim(),
-        normalizedEmail,
-        hashedPassword
-      ]
+      [String(name).trim(), normalizedEmail, hashedPassword],
     );
 
     const user = {
       id: result.insertId,
       name: String(name).trim(),
-      email: normalizedEmail
+      email: normalizedEmail,
     };
 
-    const token = jwt.sign(
-      user,
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.status(201).json({
       message: "Akun berhasil dibuat.",
       token,
-      user
+      user,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -230,46 +208,38 @@ app.post("/api/auth/login", async (req, res) => {
 
   if (!email || !password) {
     return res.status(400).json({
-      message: "Email dan password wajib diisi."
+      message: "Email dan password wajib diisi.",
     });
   }
 
   try {
     const rows = await db(
       "SELECT id, name, email, password FROM users WHERE email = ?",
-      [String(email).trim().toLowerCase()]
+      [String(email).trim().toLowerCase()],
     );
 
-    if (
-      !rows.length ||
-      !(await bcrypt.compare(password, rows[0].password))
-    ) {
+    if (!rows.length || !(await bcrypt.compare(password, rows[0].password))) {
       return res.status(401).json({
-        message: "Email atau password salah."
+        message: "Email atau password salah.",
       });
     }
 
     const user = {
       id: rows[0].id,
       name: rows[0].name,
-      email: rows[0].email
+      email: rows[0].email,
     };
 
-    const token = jwt.sign(
-      user,
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "7d" });
 
     res.json({
       message: "Login berhasil.",
       token,
-      user
+      user,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -280,7 +250,7 @@ app.post("/api/auth/login", async (req, res) => {
 
 app.get("/api/auth/me", auth, (req, res) => {
   res.json({
-    user: req.user
+    user: req.user,
   });
 });
 
@@ -308,12 +278,11 @@ app.get("/api/courses", async (req, res) => {
     `);
 
     res.json({
-      data: rows
+      data: rows,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -324,14 +293,13 @@ app.get("/api/courses", async (req, res) => {
 
 app.get("/api/courses/:slug", async (req, res) => {
   try {
-    const courses = await db(
-      "SELECT * FROM courses WHERE slug = ?",
-      [req.params.slug]
-    );
+    const courses = await db("SELECT * FROM courses WHERE slug = ?", [
+      req.params.slug,
+    ]);
 
     if (!courses.length) {
       return res.status(404).json({
-        message: "Course tidak ditemukan."
+        message: "Course tidak ditemukan.",
       });
     }
 
@@ -340,17 +308,16 @@ app.get("/api/courses/:slug", async (req, res) => {
        FROM lessons
        WHERE course_id = ?
        ORDER BY sort_order`,
-      [courses[0].id]
+      [courses[0].id],
     );
 
     res.json({
       course: courses[0],
-      lessons
+      lessons,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -373,12 +340,12 @@ app.get("/api/lessons/:id", async (req, res) => {
        FROM lessons l
        JOIN courses c ON c.id = l.course_id
        WHERE l.id = ?`,
-      [req.params.id]
+      [req.params.id],
     );
 
     if (!rows.length) {
       return res.status(404).json({
-        message: "Lesson tidak ditemukan."
+        message: "Lesson tidak ditemukan.",
       });
     }
 
@@ -386,7 +353,7 @@ app.get("/api/lessons/:id", async (req, res) => {
       `SELECT id, question, options_json, explanation
        FROM quizzes
        WHERE lesson_id = ?`,
-      [req.params.id]
+      [req.params.id],
     );
 
     res.json({
@@ -396,13 +363,12 @@ app.get("/api/lessons/:id", async (req, res) => {
         options:
           typeof q.options_json === "string"
             ? JSON.parse(q.options_json)
-            : q.options_json
-      }))
+            : q.options_json,
+      })),
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -418,19 +384,15 @@ app.post("/api/lessons/:id/complete", auth, async (req, res) => {
        VALUES (?, ?)
        ON DUPLICATE KEY UPDATE
        completed_at = CURRENT_TIMESTAMP`,
-      [
-        req.user.id,
-        req.params.id
-      ]
+      [req.user.id, req.params.id],
     );
 
     res.json({
-      message: "Progress berhasil disimpan."
+      message: "Progress berhasil disimpan.",
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -453,22 +415,19 @@ app.get("/api/progress", auth, async (req, res) => {
        JOIN courses c ON c.id = l.course_id
        WHERE p.user_id = ?
        ORDER BY p.completed_at DESC`,
-      [req.user.id]
+      [req.user.id],
     );
 
-    const totals = await db(
-      "SELECT COUNT(*) AS total FROM lessons"
-    );
+    const totals = await db("SELECT COUNT(*) AS total FROM lessons");
 
     res.json({
       completed: rows,
       total_lessons: totals[0].total,
-      completed_count: rows.length
+      completed_count: rows.length,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
@@ -482,7 +441,7 @@ app.post("/api/quizzes/:id/answer", auth, async (req, res) => {
 
   if (!Number.isInteger(selected) || selected < 0) {
     return res.status(400).json({
-      message: "Pilihan jawaban tidak valid."
+      message: "Pilihan jawaban tidak valid.",
     });
   }
 
@@ -491,23 +450,22 @@ app.post("/api/quizzes/:id/answer", auth, async (req, res) => {
       `SELECT correct_option, explanation
        FROM quizzes
        WHERE id = ?`,
-      [req.params.id]
+      [req.params.id],
     );
 
     if (!rows.length) {
       return res.status(404).json({
-        message: "Quiz tidak ditemukan."
+        message: "Quiz tidak ditemukan.",
       });
     }
 
     res.json({
       correct: selected === Number(rows[0].correct_option),
-      explanation: rows[0].explanation
+      explanation: rows[0].explanation,
     });
-
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 });
