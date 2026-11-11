@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeNest — Learn to Code, One Quest at a Time</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <!-- TOP STRIP -->
+  <div class="top-strip">
+    <span>✦ YOUR NEXT ADVENTURE STARTS HERE ✦</span>
+    <span class="strip-right">LEARN · BUILD · LEVEL UP</span>
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+
+    <a class="logo" href="#" data-view="home">
+      <span class="logo-icon">C</span> code<span>nest</span><i>®</i>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#" data-view="home" class="nav-link active">Home</a>
+      <a href="#" data-view="courses" class="nav-link">Courses</a>
+      <a href="#" data-view="dashboard" class="nav-link">My progress</a>
+      <a href="#" data-view="playground" class="nav-link">Playground</a>
+      <a href="#" data-view="achievements" class="nav-link">Achievements</a>
+    </nav>
+
+    <div class="nav-user" id="navUser">
+      <button class="btn btn-outline btn-small" id="loginOpen">
+        Log in
+      </button>
+
+      <button class="btn btn-primary btn-small" id="registerOpen">
+        Join for free ↗
+      </button>
+    </div>
+
+  </header>
+
+  <!-- MAIN APP -->
+  <main id="app">
+
+    <!-- ==============================
+         HOME
+    ============================== -->
+    <section class="hero page-view" id="homeView">
+
+      <div class="hero-copy">
+
+        <div class="pixel-label">
+          <span class="tiny-star">✦</span> THE COOLEST WAY TO LEARN CODE
+        </div>
+
+        <h1>
+          Make your<br>
+          ideas <span class="highlight">come alive.</span>
+        </h1>
+
+        <p class="hero-text">
+          A little code, a little curiosity, and a whole lot of creativity.
+          Start your coding adventure with bite-sized lessons made for you.
+        </p>
+
+        <div class="hero-actions">
+
+          <button class="btn btn-primary btn-large" data-view="courses">
+            Explore courses <span>→</span>
+          </button>
+
+          <button class="btn btn-text" data-view="dashboard">
+            My learning path ↗
+          </button>
+
+        </div>
+
+        <div class="hero-proof">
+
+          <div class="avatar-stack">
+            <b>N</b>
+            <b>A</b>
+            <b>K</b>
+          </div>
+
+          <span>
+            <strong>Small steps.</strong> Big developer energy.
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="hero-art">
+
+        <div class="spark spark-one">✦</div>
+        <div class="spark spark-two">✧</div>
+
+        <div class="float-card card-top">
+          <span>✨</span>
+
+          <div>
+            <b>+ XP</b>
+            <small>YOU'RE ON FIRE!</small>
+          </div>
+        </div>
+
+        <div class="pixel-window">
+
+          <div class="window-bar">
+            <span></span>
+            <span></span>
+            <span></span>
+            <b>my_first_website.html</b>
+          </div>
+
+          <div class="code-art">
+
+            <p>
+              <em>01</em>
+              <span class="pink">&lt;html&gt;</span>
+            </p>
+
+            <p>
+              <em>02</em>
+              &nbsp;<span class="purple">&lt;body&gt;</span>
+            </p>
+
+            <p>
+              <em>03</em>
+              &nbsp;&nbsp;<span class="yellow">&lt;h1&gt;</span>Hello, world!<span class="yellow">&lt;/h1&gt;</span>
+            </p>
+
+            <p>
+              <em>04</em>
+              &nbsp;<span class="purple">&lt;/body&gt;</span>
+            </p>
+
+            <p>
+              <em>05</em>
+              <span class="pink">&lt;/html&gt;</span>
+            </p>
+
+            <div class="cursor"></div>
+
+          </div>
+
+          <div class="window-footer">
+            <span>● ALL SYSTEMS GO</span>
+            <span>HTML · CSS · YOU</span>
+          </div>
+
+        </div>
+
+        <div class="mascot">🐸</div>
+
+        <div class="float-card card-bottom">
+          <span>🏆</span>
+
+          <div>
+            <b>LEVEL UP!</b>
+            <small>YOUR JOURNEY BEGINS</small>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hero-bottom">
+        <span>SCROLL TO EXPLORE ↓</span>
+        <span>NO EXPERIENCE NEEDED. JUST GOOD VIBES.</span>
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         COURSES
+    ============================== -->
+    <section class="section page-view" id="coursesView">
+
+      <div class="section-heading">
+
+        <div>
+          <div class="pixel-label">PICK YOUR ADVENTURE</div>
+
+          <h2>
+            Choose your <span class="highlight">quest.</span>
+          </h2>
+
+          <p>
+            Every expert was once a beginner. Find your first level.
+          </p>
+        </div>
+
+        <div class="course-count" id="courseCount">
+          5 COURSES
+        </div>
+
+      </div>
+
+      <div class="filter-row">
+
+        <div class="filters" id="courseFilters">
+
+          <button class="filter active" data-filter="All">
+            All paths
+          </button>
+
+          <button class="filter" data-filter="Web Development">
+            Web development
+          </button>
+
+          <button class="filter" data-filter="Programming">
+            Programming
+          </button>
+
+          <button class="filter" data-filter="Database">
+            Database
+          </button>
+
+        </div>
+
+        <input
+          id="courseSearch"
+          class="search-input"
+          placeholder="⌕ Find a course..."
+        >
+
+      </div>
+
+      <div class="course-grid" id="courseGrid">
+        <div class="loading-card">
+          Loading your quests...
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         COURSE DETAIL
+    ============================== -->
+    <section class="section page-view" id="courseDetailView">
+
+      <button class="back-link" data-view="courses">
+        ← Back to all courses
+      </button>
+
+      <div id="courseDetail"></div>
+
+    </section>
+
+
+    <!-- ==============================
+         LESSON
+    ============================== -->
+    <section class="section page-view" id="lessonView">
+
+      <button class="back-link" id="lessonBack">
+        ← Back to course
+      </button>
+
+      <div class="lesson-layout">
+
+        <article class="lesson-main" id="lessonContent"></article>
+
+        <aside class="lesson-side" id="lessonSidebar"></aside>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         DASHBOARD
+    ============================== -->
+    <section class="section page-view" id="dashboardView">
+
+      <div class="pixel-label">
+        YOUR PLAYER STATS
+      </div>
+
+      <h2>
+        Welcome back,
+        <span class="highlight" id="dashName">coder</span>!
+      </h2>
+
+      <p class="section-intro">
+        Every lesson completed is another step forward.
+      </p>
+
+      <div class="dashboard-grid">
+
+        <div class="dash-card">
+          <span>🎯</span>
+          <small>LESSONS COMPLETED</small>
+          <strong id="completedCount">0</strong>
+        </div>
+
+        <div class="dash-card">
+          <span>🧩</span>
+          <small>AVAILABLE LESSONS</small>
+          <strong id="totalCount">20</strong>
+        </div>
+
+        <div class="dash-card">
+          <span>🚀</span>
+          <small>YOUR PROGRESS</small>
+          <strong id="progressPercent">0%</strong>
+        </div>
+
+      </div>
+
+      <div class="panel-box">
+
+        <h3>🗺️ Your learning map</h3>
+
+        <div id="progressList" class="progress-list">
+          <p>Log in to see your saved progress.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         PLAYGROUND
+    ============================== -->
+    <section class="section page-view" id="playgroundView">
+
+      <div class="section-heading playground-heading">
+
+        <div>
+          <div class="pixel-label">
+            YOUR CREATIVE WORKSPACE
+          </div>
+
+          <h2>
+            Code your <span class="highlight">ideas.</span>
+          </h2>
+
+          <p>
+            Experiment, build, and bring your ideas to life.
+          </p>
+        </div>
+
+        <div class="playground-status">
+          <span class="status-dot"></span>
+          READY TO CODE
+        </div>
+
+      </div>
+
+
+      <div class="playground-layout">
+
+        <!-- CODE EDITOR -->
+        <div class="editor-panel">
+
+          <div class="editor-header">
+
+            <div class="editor-window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <span class="editor-title">
+              my-project
+            </span>
+
+            <span class="editor-language">
+              CODE EDITOR
+            </span>
+
+          </div>
+
+
+          <!-- EDITOR TABS -->
+          <div class="editor-tabs">
+
+            <button class="editor-tab active" data-editor-tab="html">
+              HTML
+            </button>
+
+            <button class="editor-tab" data-editor-tab="css">
+              CSS
+            </button>
+
+            <button class="editor-tab" data-editor-tab="js">
+              JavaScript
+            </button>
+
+          </div>
+
+
+          <!-- EDITOR BODY -->
+          <div class="editor-body">
+
+            <textarea
+              id="htmlEditor"
+              class="code-editor active"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              aria-label="HTML editor"
+            ></textarea>
+
+            <textarea
+              id="cssEditor"
+              class="code-editor"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              aria-label="CSS editor"
+              hidden
+            ></textarea>
+
+            <textarea
+              id="jsEditor"
+              class="code-editor"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              aria-label="JavaScript editor"
+              hidden
+            ></textarea>
+
+          </div>
+
+
+          <div class="editor-footer">
+            <span>● HTML · CSS · JS</span>
+            <span>YOUR SPACE, YOUR RULES.</span>
+          </div>
+
+        </div>
+
+
+        <!-- LIVE PREVIEW -->
+        <div class="preview-panel">
+
+          <div class="preview-header">
+
+            <div>
+              <span class="preview-icon">◈</span>
+              <b>LIVE PREVIEW</b>
+            </div>
+
+            <span class="preview-label">OUTPUT</span>
+
+          </div>
+
+          <iframe
+            id="playgroundPreview"
+            class="preview-frame"
+            title="CodeNest playground preview"
+            sandbox="allow-scripts"
+          ></iframe>
+
+          <div class="preview-footer">
+            <span>✦ YOUR RESULT APPEARS HERE</span>
+            <span>CODE · RUN · CREATE</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- PLAYGROUND ACTIONS -->
+      <div class="playground-actions">
+
+        <div class="playground-tip">
+          💡 Try changing the code and see what happens!
+        </div>
+
+        <div class="playground-buttons">
+
+          <button
+            class="btn btn-outline btn-small"
+            id="resetPlayground"
+          >
+            ↺ Reset
+          </button>
+
+          <button
+            class="btn btn-primary btn-small"
+            id="runPlayground"
+          >
+            ▶ Run Code
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==============================
+         ACHIEVEMENTS
+    ============================== -->
+    <section class="section page-view" id="achievementsView">
+
+      <div class="section-heading achievements-heading">
+
+        <div>
+          <div class="pixel-label">
+            YOUR TROPHY COLLECTION
+          </div>
+
+          <h2>
+            Little wins,
+            <span class="highlight">big achievements.</span>
+          </h2>
+
+          <p>
+            Keep learning and collecting badges along your coding journey.
+          </p>
+        </div>
+
+        <div class="achievement-total" id="achievementTotal">
+          0 / 5 UNLOCKED
+        </div>
+
+      </div>
+
+
+      <!-- ACHIEVEMENT SUMMARY -->
+      <div class="achievement-summary">
+
+        <div class="achievement-summary-icon">
+          🏆
+        </div>
+
+        <div class="achievement-summary-content">
+
+          <strong id="achievementGreeting">
+            Your adventure starts here!
+          </strong>
+
+          <p id="achievementSummaryText">
+            Complete lessons to unlock your first achievement.
+          </p>
+
+          <div class="progress-track">
+            <div
+              class="progress-fill"
+              id="achievementProgressFill"
+              style="width: 0%"
+            ></div>
+          </div>
+
+        </div>
+
+        <div class="achievement-summary-count">
+
+          <strong id="achievementPercent">0%</strong>
+
+          <small>COLLECTED</small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACHIEVEMENT TITLE -->
+      <div class="achievement-section-title">
+
+        <h3>🎖️ Achievement badges</h3>
+
+        <span>UNLOCK THEM ALL</span>
+
+      </div>
+
+
+      <!-- ACHIEVEMENT CARDS -->
+      <div class="achievement-grid" id="achievementGrid">
+
+        <div class="loading-card">
+          Loading your achievements...
+        </div>
+
+      </div>
+
+
+      <!-- ACHIEVEMENT NOTE -->
+      <div class="achievement-note">
+
+        <span>💡</span>
+
+        <p>
+          Every completed lesson brings you closer to your next badge.
+          Keep going, coder!
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer class="footer">
+
+    <a class="logo" href="#" data-view="home">
+      <span class="logo-icon">C</span> code<span>nest</span><i>®</i>
+    </a>
+
+    <p>
+      Made for curious minds. Powered by tiny steps and big dreams.
+    </p>
+
+    <span>
+      © 2026 CODENEST · KEEP BUILDING ✦
+    </span>
+
+  </footer>
+
+
+  <!-- ==============================
+       AUTH MODAL
+  ============================== -->
+  <div class="modal-backdrop" id="authModal">
+
+    <div class="modal">
+
+      <button class="modal-close" id="modalClose">
+        ×
+      </button>
+
+      <div class="modal-icon">👾</div>
+
+      <div class="pixel-label" id="authEyebrow">
+        WELCOME TO THE NEST
+      </div>
+
+      <h2 id="authTitle">
+        Join the adventure!
+      </h2>
+
+      <p id="authSubtitle">
+        Create your free account and save your progress.
+      </p>
+
+
+      <form id="authForm">
+
+        <label id="nameField">
+          Your name
+
+          <input
+            name="name"
+            placeholder="Pixel pal"
+            required
+          >
+        </label>
+
+
+        <label>
+          Email address
+
+          <input
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            required
+          >
+        </label>
+
+
+        <label>
+          Password
+
+          <input
+            name="password"
+            type="password"
+            minlength="6"
+            placeholder="At least 6 characters"
+            required
+          >
+        </label>
+
+
+        <button
+          class="btn btn-primary btn-full"
+          id="authSubmit"
+        >
+          Create my account →
+        </button>
+
+      </form>
+
+
+      <div class="auth-switch" id="authSwitch">
+        Already have an account?
+        <button id="switchAuth">Log in</button>
+      </div>
+
+
+      <p class="modal-message" id="authMessage"></p>
+
+    </div>
+
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- JAVASCRIPT -->
+  <script src="/app.js"></script>
+
+</body>
+</html>
